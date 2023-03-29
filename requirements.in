@@ -1,3 +1,4 @@
+alembic
 black
 coloredlogs
 debugpy
@@ -16,6 +17,7 @@ pytest
 python-dotenv
 pywatchman
 smart_open
+SQLAlchemy
 sqlparse
 types-mock
 xmltodict
