@@ -1,0 +1,27 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  sqlalchemyplay:
+    image: postgres
+    restart: always
+    container_name: sqlalchemy-play-db
+    ports:
+      - 5439:5432
+    environment:
+      POSTGRES_USER: "play"
+      POSTGRES_PASSWORD: "play"
+      POSTGRES_DB: "play"
+
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata: {}

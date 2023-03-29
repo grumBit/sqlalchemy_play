@@ -8,7 +8,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -227,3 +228,6 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/macOS,VisualStudioCode,python
 
 tmp
+
+# PostgresSQL 
+db/pgdata
