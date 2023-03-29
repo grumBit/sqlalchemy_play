@@ -3,10 +3,10 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 
-class Play():
-
+class Play:
     def say(self, msg: str):
-        LOGGER.info(f"Saying: {msg}")
+        full_msg = f"Saying: {msg}"
+        LOGGER.info(full_msg)
         print(msg)
 
     def log_stuff(self):
@@ -15,6 +15,7 @@ class Play():
         LOGGER.warning("warn message")
         LOGGER.error("error message")
         LOGGER.critical("critical message")
+
 
 if __name__ == "__main__":
     player = Play()
