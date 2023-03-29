@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "name": "sqlalchemy_play",
+            "path": "/Volumes/grum/dev/sqlalchemy_play"
+        },
+        {
+            "path": "."
+        },
+        {
+            "name": "scratch",
+            "path": "/Users/grahamcoster/grum/scratch"
+        },
+
+    ],
+    "settings": {
+        "terminal.integrated.cwd": "/Volumes/grum/dev/sqlalchemy_play",
+    }
+}
