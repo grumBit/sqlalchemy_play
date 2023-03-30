@@ -17,7 +17,7 @@ class Play:
         LOGGER.info(f"SQLAlechemy version: {sqlalchemy.__version__}")
 
         # Generate the db connection url;
-        url_object: URL = URL.create(
+        url_object: URL = URL.create(  # type: ignore
             "postgresql+psycopg2",
             username="play",
             password="play",  # plain (unescaped) text
