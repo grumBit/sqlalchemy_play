@@ -37,4 +37,4 @@ pip-sync
 ## Run example code
 
 - running `main.py` will run all the example code
-- _NB: SQLALchemy debug level logging has been added into the logging stored in tmp/debug.log_
+- _NB: SQLALchemy debug level logging has been added to the logging stored in tmp/debug.log_
