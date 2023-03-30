@@ -3,6 +3,7 @@ import logging
 import sqlalchemy
 
 from sqlalchemy import create_engine, Engine, text, URL
+from sqlalchemy.orm import Session
 
 LOGGER = logging.getLogger(__name__)
 
@@ -146,6 +147,7 @@ class Play:
         self.connections()
         self.results()
         self.sending_parameters()
+        self.executing_with_an_ORM_Session()
 
 
 if __name__ == "__main__":
