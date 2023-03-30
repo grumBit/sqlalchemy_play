@@ -2,10 +2,13 @@ import logging
 
 import sqlalchemy
 
-from sqlalchemy import create_engine, Engine, text, URL
+from sqlalchemy import Column, create_engine, Engine, ForeignKey, Integer, MetaData, String, Table, text, URL
 from sqlalchemy.orm import Session
 
 LOGGER = logging.getLogger(__name__)
+
+# Create shared metadata object
+metadata_obj = MetaData()
 
 
 class Play:
@@ -143,11 +146,45 @@ class Play:
             )
             session.commit()
 
+    def setting_up_MetaData_with_Table_objects(self):
+        # Setting up MetaData with Table objects
+
+        ### IMPORTANT: metadata_obj was created globally so it can be shared.
+
+        # Define a user account table with 3 columns; id, nickname & fullname
+        user_account_table = Table(
+            "user_account",  #                          Table name
+            metadata_obj,  #                            MetaData object to add table to. NB: tables can be in many.
+            Column("id", Integer),  # primary_key=True),  # Note the primary key constraint being set
+            Column("nickname", String(30)),
+            Column("fullname", String),
+        )
+
+        # Columns can be accessed by name;
+        LOGGER.info(user_account_table.columns.nickname.__repr__())
+        LOGGER.info(user_account_table.c.nickname.__repr__())  # The magic of Table.c - a shorthand for Table.columns
+
+        # Column names can be found;
+        LOGGER.info(user_account_table.columns.keys())
+
+        # Table constraints can be found;
+        LOGGER.info(user_account_table.primary_key)  # NB: If not set returns a default empty PrimaryKeyConstraint
+
+        # Define an address table
+        address_table = Table(
+            "address",
+            metadata_obj,
+            Column("id", Integer, primary_key=True),
+            Column("user_id", ForeignKey("user_account.id"), nullable=False),  # Note foreign key constraint to the user
+            Column("email_address", String, nullable=False),  # Note nullable constraint ~= SQL “NOT NULL” constraint
+        )
+
     def run_all(self):
         self.connections()
         self.results()
         self.sending_parameters()
         self.executing_with_an_ORM_Session()
+        self.setting_up_MetaData_with_Table_objects()
 
 
 if __name__ == "__main__":
