@@ -55,7 +55,9 @@ mccabe==0.7.0
 mock==5.0.1
     # via -r requirements.in
 mypy==1.1.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   sqlalchemy
 mypy-extensions==1.0.0
     # via
     #   black
@@ -95,7 +97,7 @@ six==1.16.0
     # via python-dateutil
 smart-open==6.3.0
     # via -r requirements.in
-sqlalchemy==2.0.7
+sqlalchemy[mypy]==2.0.7
     # via
     #   -r requirements.in
     #   alembic
