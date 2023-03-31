@@ -147,9 +147,9 @@ class Play:
             session.commit()
 
     def setting_up_MetaData_with_Table_objects(self):
-        # Setting up MetaData with Table objects
+        # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#setting-up-metadata-with-table-objects
 
-        ### IMPORTANT: metadata_obj was created globally so it can be shared.
+        # Note: metadata_obj was created globally so it can be shared.
 
         # Define a user account table with 3 columns; id, nickname & fullname
         user_account_table = Table(
@@ -160,12 +160,15 @@ class Play:
             Column("fullname", String),
         )
 
+        ### Table components https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#components-of-table
         # Columns can be accessed by name;
         LOGGER.info(user_account_table.columns.nickname.__repr__())
         LOGGER.info(user_account_table.c.nickname.__repr__())  # The magic of Table.c - a shorthand for Table.columns
 
         # Column names can be found;
         LOGGER.info(user_account_table.columns.keys())
+
+        ### Defining constraints https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#declaring-simple-constraints
 
         # Table constraints can be found;
         LOGGER.info(user_account_table.primary_key)  # NB: If not set returns a default empty PrimaryKeyConstraint
