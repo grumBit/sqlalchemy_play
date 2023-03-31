@@ -155,7 +155,7 @@ class Play:
         user_account_table = Table(
             "user_account",  #                          Table name
             metadata_obj,  #                            MetaData object to add table to. NB: tables can be in many.
-            Column("id", Integer),  # primary_key=True),  # Note the primary key constraint being set
+            Column("id", Integer, primary_key=True),  # Note the primary key constraint being set
             Column("nickname", String(30)),
             Column("fullname", String),
         )
@@ -181,6 +181,12 @@ class Play:
             Column("user_id", ForeignKey("user_account.id"), nullable=False),  # Note foreign key constraint to the user
             Column("email_address", String, nullable=False),  # Note nullable constraint ~= SQL “NOT NULL” constraint
         )
+
+        ### Emitting DDL to the Database
+        # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#emitting-ddl-to-the-database
+
+        # Create the tables that have been defined in the MetaData;
+        metadata_obj.create_all(self.engine)
 
     def run_all(self):
         self.connections()
