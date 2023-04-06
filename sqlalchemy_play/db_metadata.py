@@ -16,19 +16,45 @@ class DBMetaData:
     def __init__(self, engine: Engine):
         self.engine = engine
 
+    @staticmethod
+    def get_user_account_table() -> Table:
+        if "user_account_core_style" not in metadata_obj:
+            # Define a user account table with 3 columns; id, nickname & fullname
+            Table(
+                "user_account_core_style",  #               Table name. Grum: Added _core_style suffix to have both style expamples
+                metadata_obj,  #                            MetaData object to add table to. NB: tables can be in many.
+                Column("id", Integer, primary_key=True),  # Note the primary key constraint being set
+                Column("nickname", String(30)),
+                Column("fullname", String),
+            )
+        return metadata_obj.tables["user_account_core_style"]
+
+    @staticmethod
+    def get_address_table() -> Table:
+        if "address_core_style" not in metadata_obj:
+            # Define an address table
+            Table(
+                "address_core_style",  # Grum: Added _core_style suffix to have both style expamples
+                metadata_obj,
+                Column("id", Integer, primary_key=True),
+                Column(
+                    "user_id",
+                    ForeignKey("user_account_core_style.id"),
+                    nullable=False,  # Grum: my _core_style suffix needed
+                ),  # Note foreign key constraint to the user
+                Column(
+                    "email_address", String, nullable=False
+                ),  # Note nullable constraint ~= SQL “NOT NULL” constraint
+            )
+        return metadata_obj.tables["address_core_style"]
+
     def setting_up_MetaData_with_Table_objects(self):
         # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#setting-up-metadata-with-table-objects
 
         # Note: metadata_obj was created globally so it can be shared.
 
         # Define a user account table with 3 columns; id, nickname & fullname
-        user_account_table = Table(
-            "user_account_core_style",  #                          Table name. Grum: Added _core_style suffix to have both style expamples
-            metadata_obj,  #                            MetaData object to add table to. NB: tables can be in many.
-            Column("id", Integer, primary_key=True),  # Note the primary key constraint being set
-            Column("nickname", String(30)),
-            Column("fullname", String),
-        )
+        user_account_table = self.get_user_account_table()
 
         ### Table components https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#components-of-table
         # Columns can be accessed by name;
@@ -39,22 +65,11 @@ class DBMetaData:
         LOGGER.info(user_account_table.columns.keys())
 
         ### Defining constraints https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#declaring-simple-constraints
-
         # Table constraints can be found;
         LOGGER.info(user_account_table.primary_key)  # NB: If not set returns a default empty PrimaryKeyConstraint
 
         # Define an address table
-        address_table = Table(
-            "address_core_style",  # Grum: Added _core_style suffix to have both style expamples
-            metadata_obj,
-            Column("id", Integer, primary_key=True),
-            Column(
-                "user_id",
-                ForeignKey("user_account_core_style.id"),
-                nullable=False,  # Grum: my _core_style suffix needed
-            ),  # Note foreign key constraint to the user
-            Column("email_address", String, nullable=False),  # Note nullable constraint ~= SQL “NOT NULL” constraint
-        )
+        address_table = self.get_address_table()
 
         ### Emitting DDL to the Database
         # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#emitting-ddl-to-the-database
