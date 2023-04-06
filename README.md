@@ -28,7 +28,7 @@ pip-sync
   - Can also connect using Adminer using;
     - <localhost:8080>
     - System = PostgreSQL
-    - Server = sqlalchemyplay        <- This name set in docker-compose.yml
+    - Server = sqlalchemyplay        <- This name is set in docker-compose.yml
     - User = play
     - Password = play
     - Database = play

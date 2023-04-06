@@ -3,7 +3,9 @@ import logging
 import sqlalchemy
 
 from sqlalchemy import Column, create_engine, Engine, ForeignKey, Integer, MetaData, String, Table, text, URL
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import DeclarativeBase, Session
+
+from sqlalchemy_play import play_orm
 
 LOGGER = logging.getLogger(__name__)
 
@@ -50,8 +52,10 @@ class Play:
         # E.g. Create a table and add some content;
         with self.engine.connect() as conn:
             if sqlalchemy.inspect(self.engine).has_table("some_table", schema="public"):
+                # Grum: Just doing this so that I can re-run theses examples over and over
                 LOGGER.warning("some_table already exists - dropping it")
                 conn.execute(text("DROP TABLE some_table"))
+
             conn.execute(text("CREATE TABLE some_table (x int, y int)"))
             conn.commit()
 
@@ -153,7 +157,7 @@ class Play:
 
         # Define a user account table with 3 columns; id, nickname & fullname
         user_account_table = Table(
-            "user_account",  #                          Table name
+            "user_account_core_style",  #                          Table name. Grum: Added _core_style suffix to have both style expamples
             metadata_obj,  #                            MetaData object to add table to. NB: tables can be in many.
             Column("id", Integer, primary_key=True),  # Note the primary key constraint being set
             Column("nickname", String(30)),
@@ -175,10 +179,14 @@ class Play:
 
         # Define an address table
         address_table = Table(
-            "address",
+            "address_core_style",  # Grum: Added _core_style suffix to have both style expamples
             metadata_obj,
             Column("id", Integer, primary_key=True),
-            Column("user_id", ForeignKey("user_account.id"), nullable=False),  # Note foreign key constraint to the user
+            Column(
+                "user_id",
+                ForeignKey("user_account_core_style.id"),
+                nullable=False,  # Grum: my _core_style suffix needed
+            ),  # Note foreign key constraint to the user
             Column("email_address", String, nullable=False),  # Note nullable constraint ~= SQL “NOT NULL” constraint
         )
 
@@ -188,12 +196,36 @@ class Play:
         # Create the tables that have been defined in the MetaData;
         metadata_obj.create_all(self.engine)
 
+    def using_ORM_declarative_forms_to_define_Table_Metadata(self):
+        # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#using-orm-declarative-forms-to-define-table-metadata
+
+        LOGGER.info(
+            f"My Base class established a declaritive base, the class has a Metadata (Base.metadata={play_orm.Base.metadata} and Registry (Base.registry={play_orm.Base.registry}"
+        )
+
+        # The Base.metadata is populated with tables for classes that inherit from my Base class
+        # (i.e. User & Address). This means the tables can be created using MetaData.create_all()
+        play_orm.Base.metadata.create_all(self.engine)
+
+    def table_reflection(self):
+        # https://docs.sqlalchemy.org/en/20/tutorial/metadata.html#table-reflection
+
+        new_metadata_obj = MetaData()
+        # Go off to the DB and find the existing some_table;
+        some_table = Table("some_table", new_metadata_obj, autoload_with=self.engine)
+        LOGGER.info(f"Using reflection, created a Table object with it's columns; {some_table.columns.__str__()}")
+        LOGGER.info(
+            f"Reflection also populated the new MetaData object with the table; new_metadata_obj.tables={new_metadata_obj.tables}"
+        )
+
     def run_all(self):
         self.connections()
         self.results()
         self.sending_parameters()
         self.executing_with_an_ORM_Session()
         self.setting_up_MetaData_with_Table_objects()
+        self.using_ORM_declarative_forms_to_define_Table_Metadata()
+        self.table_reflection()
 
 
 if __name__ == "__main__":

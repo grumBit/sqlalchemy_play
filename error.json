@@ -1,0 +1,94 @@
+{
+  "message": "Error while querying",
+  "processingId": "30826",
+  "queueSize": 3,
+  "duration": 14272,
+  "queryKey": [
+    [
+      "CREATE TABLE prod_pre_aggregations.playable_sessions_daily_interactions20230301 AS SELECT\n      \"playable_sessions\".target_type \"playable_sessions__target_type\", \"playable_sessions\".target_uuid \"playable_sessions__target_uuid\", date_trunc('day', CAST(date_add('minute', timezone_minute(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), date_add('hour', timezone_hour(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), \"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne')) AS TIMESTAMP)) \"playable_sessions__first_interaction_at_day\", sum(\"playable_sessions\".was_playable_completed) \"playable_sessions__sessions_completed_playable\", count(*) \"playable_sessions__sessions_interacted\", sum(\"playable_sessions\".was_playable_played) \"playable_sessions__sessions_played_playable\", sum(\"playable_sessions\".was_playable_started) \"playable_sessions__sessions_started_playable\"\n    FROM\n      apsys_apsys_dev_komodo_eventsdb.fct_vx_playable_sessions AS \"playable_sessions\"  WHERE (\"playable_sessions\".first_interaction_at >= from_iso8601_timestamp(?) AND \"playable_sessions\".first_interaction_at <= from_iso8601_timestamp(?)) GROUP BY 1, 2, 3",
+      ["2023-02-28T13:00:00.000Z", "2023-03-31T12:59:59.999Z"],
+      {}
+    ],
+    [[{ "refresh_key": "19443" }]]
+  ],
+  "queuePrefix": "SQL_PRE_AGGREGATIONS_STANDALONE_default",
+  "requestId": "scheduler-20ba393e-526c-4bb1-9476-36037b0ca0b7",
+  "timeInQueue": 16,
+  "preAggregationId": "PlayableSessions.dailyInteractions",
+  "newVersionEntry": {
+    "table_name": "prod_pre_aggregations.playable_sessions_daily_interactions20230301",
+    "structure_version": "g2sei2ob",
+    "content_version": "vpdgkv5i",
+    "last_updated_at": 1679888397247,
+    "naming_version": 2
+  },
+  "preAggregation": {
+    "preAggregationId": "PlayableSessions.dailyInteractions",
+    "timezone": "Australia/Melbourne",
+    "timestampFormat": "YYYY-MM-DD[T]HH:mm:ss.SSS[Z]",
+    "tableName": "prod_pre_aggregations.playable_sessions_daily_interactions20230301",
+    "invalidateKeyQueries": [
+      [
+        "SELECT CASE\n    WHEN NOW() < DATE_ADD(CAST(? as TIMESTAMP), INTERVAL '2 days') THEN FLOOR((UNIX_TIMESTAMP()) / 86400) END as refresh_key",
+        ["2023-03-31T12:59:59.999Z"],
+        {
+          "external": true,
+          "renewalThreshold": 300,
+          "incremental": true,
+          "updateWindowSeconds": 172800,
+          "renewalThresholdOutsideUpdateWindow": 86400
+        }
+      ]
+    ],
+    "type": "rollup",
+    "external": true,
+    "previewSql": [
+      "SELECT * FROM prod_pre_aggregations.playable_sessions_daily_interactions20230301 LIMIT 1000",
+      [],
+      {}
+    ],
+    "preAggregationsSchema": "prod_pre_aggregations",
+    "loadSql": [
+      "CREATE TABLE prod_pre_aggregations.playable_sessions_daily_interactions20230301 AS SELECT\n      \"playable_sessions\".target_type \"playable_sessions__target_type\", \"playable_sessions\".target_uuid \"playable_sessions__target_uuid\", date_trunc('day', CAST(date_add('minute', timezone_minute(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), date_add('hour', timezone_hour(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), \"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne')) AS TIMESTAMP)) \"playable_sessions__first_interaction_at_day\", sum(\"playable_sessions\".was_playable_completed) \"playable_sessions__sessions_completed_playable\", count(*) \"playable_sessions__sessions_interacted\", sum(\"playable_sessions\".was_playable_played) \"playable_sessions__sessions_played_playable\", sum(\"playable_sessions\".was_playable_started) \"playable_sessions__sessions_started_playable\"\n    FROM\n      apsys_apsys_dev_komodo_eventsdb.fct_vx_playable_sessions AS \"playable_sessions\"  WHERE (\"playable_sessions\".first_interaction_at >= from_iso8601_timestamp(?) AND \"playable_sessions\".first_interaction_at <= from_iso8601_timestamp(?)) GROUP BY 1, 2, 3",
+      ["2023-02-28T13:00:00.000Z", "2023-03-31T12:59:59.999Z"],
+      {}
+    ],
+    "sql": [
+      "SELECT\n      \"playable_sessions\".target_type \"playable_sessions__target_type\", \"playable_sessions\".target_uuid \"playable_sessions__target_uuid\", date_trunc('day', CAST(date_add('minute', timezone_minute(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), date_add('hour', timezone_hour(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), \"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne')) AS TIMESTAMP)) \"playable_sessions__first_interaction_at_day\", sum(\"playable_sessions\".was_playable_completed) \"playable_sessions__sessions_completed_playable\", count(*) \"playable_sessions__sessions_interacted\", sum(\"playable_sessions\".was_playable_played) \"playable_sessions__sessions_played_playable\", sum(\"playable_sessions\".was_playable_started) \"playable_sessions__sessions_started_playable\"\n    FROM\n      apsys_apsys_dev_komodo_eventsdb.fct_vx_playable_sessions AS \"playable_sessions\"  WHERE (\"playable_sessions\".first_interaction_at >= from_iso8601_timestamp(?) AND \"playable_sessions\".first_interaction_at <= from_iso8601_timestamp(?)) GROUP BY 1, 2, 3",
+      ["2023-02-28T13:00:00.000Z", "2023-03-31T12:59:59.999Z"],
+      {}
+    ],
+    "uniqueKeyColumns": [
+      "\"playable_sessions__target_type\"",
+      "\"playable_sessions__target_uuid\"",
+      "\"playable_sessions__first_interaction_at_day\""
+    ],
+    "aggregationsColumns": [
+      "sum(\"playable_sessions__sessions_completed_playable\")",
+      "sum(\"playable_sessions__sessions_interacted\")",
+      "sum(\"playable_sessions__sessions_played_playable\")",
+      "sum(\"playable_sessions__sessions_started_playable\")"
+    ],
+    "dataSource": "default",
+    "granularity": "day",
+    "partitionGranularity": "month",
+    "preAggregationStartEndQueries": [
+      [
+        "select min(CAST(date_add('minute', timezone_minute(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), date_add('hour', timezone_hour(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), \"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne')) AS TIMESTAMP)) from apsys_apsys_dev_komodo_eventsdb.fct_vx_playable_sessions AS \"playable_sessions\"",
+        []
+      ],
+      [
+        "select max(CAST(date_add('minute', timezone_minute(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), date_add('hour', timezone_hour(\"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne'), \"playable_sessions\".first_interaction_at AT TIME ZONE 'Australia/Melbourne')) AS TIMESTAMP)) from apsys_apsys_dev_komodo_eventsdb.fct_vx_playable_sessions AS \"playable_sessions\"",
+        []
+      ]
+    ],
+    "indexesSql": [],
+    "createTableIndexes": [],
+    "readOnly": false,
+    "buildRangeEnd": "2023-03-24T18:52:14.168",
+    "expandedPartition": true,
+    "priority": -1
+  },
+  "addedToQueueTime": 1679888397336,
+  "error": "Error: Error during create table: CREATE TABLE prod_pre_aggregations.playable_sessions_daily_interactions20230301_vpdgkv5i_g2sei2ob_1i2240d (`playable_sessions__target_type` varchar(255), `playable_sessions__target_uuid` varchar(255), `playable_sessions__first_interaction_at_day` timestamp(3), `playable_sessions__sessions_completed_playable` bigint, `playable_sessions__sessions_interacted` bigint, `playable_sessions__sessions_played_playable` bigint, `playable_sessions__sessions_started_playable` bigint) WITH (input_format = 'csv_no_header', build_range_end = '2023-03-24T18:52:14.168') LOCATION ?, ?, ?, ?, ?, ?: Internal: ParserError(\"Expected ',' or ')' after column definition, found: (\")\n    at WebSocket.<anonymous> (/cube/node_modules/@cubejs-backend/cubestore-driver/src/WebSocketConnection.ts:94:30)\n    at WebSocket.emit (events.js:400:28)\n    at Receiver.receiverOnMessage (/cube/node_modules/ws/lib/websocket.js:1068:20)\n    at Receiver.emit (events.js:400:28)\n    at Receiver.dataMessage (/cube/node_modules/ws/lib/receiver.js:502:14)\n    at Receiver.getData (/cube/node_modules/ws/lib/receiver.js:435:17)\n    at Receiver.startLoop (/cube/node_modules/ws/lib/receiver.js:143:22)\n    at Receiver._write (/cube/node_modules/ws/lib/receiver.js:78:10)\n    at writeOrBuffer (internal/streams/writable.js:358:12)\n    at Receiver.Writable.write (internal/streams/writable.js:303:10)\n    at Socket.socketOnData (/cube/node_modules/ws/lib/websocket.js:1162:35)\n    at Socket.emit (events.js:400:28)\n    at addChunk (internal/streams/readable.js:293:12)\n    at readableAddChunk (internal/streams/readable.js:267:9)\n    at Socket.Readable.push (internal/streams/readable.js:206:10)\n    at TCP.onStreamRead (internal/stream_base_commons.js:188:23)"
+}
