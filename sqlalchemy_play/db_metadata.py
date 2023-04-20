@@ -104,3 +104,4 @@ class DBMetaData:
     def run_all(self):
         self.setting_up_MetaData_with_Table_objects()
         self.using_ORM_declarative_forms_to_define_Table_Metadata()
+        self.table_reflection()
