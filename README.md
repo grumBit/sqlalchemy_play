@@ -5,7 +5,7 @@ These notes were adapted from <https://docs.sqlalchemy.org/en/20/intro.html>
 # Installation notes
 
 - Created a basic python project using `grum_make_python_workspace -m sqlalchemy-play`
-- Added `alembic` and `SQLAlchemy` to requirements.in
+- Added `alembic`, `SQLAlchemy` and `sqlalchemy[mypy]` to requirements.in
 - ran
 
 ```bash
