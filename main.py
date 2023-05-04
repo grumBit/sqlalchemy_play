@@ -24,6 +24,12 @@ def main():
         address_table=DBMetaData.get_address_table(),
     ).run_all()
 
+    from sqlalchemy_play import play_orm
+    from sqlalchemy_play.grum_delete_all_util import delete_all
+
+    app_registry = play_orm.Base.registry
+    # delete_all(app_registry, engine)
+
 
 if __name__ == "__main__":
     LOGGER.info("Starting sqlalchemy_play")
