@@ -10,7 +10,7 @@ def delete_all(app_registry: registry, engine: Engine):
 
     May break with foreign key constraints if the necessary cascade-deletes have
     not been specified in each of the ORM classes.
-    https://docs.sqlalchemy.org/en/20/orm/cascades.html#delete
+    https://docs.sqlalchemy.org/en/20/orm/cascades.html#using-foreign-key-on-delete-cascade-with-orm-relationships
     """
     class_registry = app_registry._class_registry
     registered_orm_classes = [i for i in class_registry.values() if isclass(i)]

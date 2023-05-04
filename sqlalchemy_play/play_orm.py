@@ -22,7 +22,11 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
     fullname: Mapped[Optional[str]]
-    addresses: Mapped[List["Address"]] = relationship(back_populates="user")
+    addresses: Mapped[List["Address"]] = relationship(
+        back_populates="user",
+        cascade="all, delete",
+        passive_deletes=True,
+    )
 
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, name={self.name!r}, fullname={self.fullname!r})"
@@ -32,7 +36,9 @@ class Address(Base):
     __tablename__ = "address_orm_style"  # Grum: Added _orm_style suffix to have both style expamples
     id: Mapped[int] = mapped_column(primary_key=True)
     email_address: Mapped[str]
-    user_id = mapped_column(ForeignKey("user_account_orm_style.id"))  # Grum: my _orm_style suffix needed
+    user_id = mapped_column(
+        ForeignKey("user_account_orm_style.id", ondelete="CASCADE")
+    )  # Grum: my _orm_style suffix needed
     user: Mapped[User] = relationship(back_populates="addresses")
 
     def __repr__(self) -> str:
